@@ -9,3 +9,5 @@ router
   .post(uploadImage.single("profile"), Users.handleRegister);
 
 router.route("/login").post(Users.handleLogin);
+
+module.exports = router;
