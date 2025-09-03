@@ -3,7 +3,7 @@ const User = require("../models/Users");
 
 // multer
 const path = require("path");
-const multer = requier("multer");
+const multer = require("multer");
 
 // storage
 const storage = (pathName) => {
