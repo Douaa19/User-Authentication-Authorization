@@ -25,10 +25,6 @@ const Users = new mongoose.Schema({
     ],
   },
   role: Role,
-  sub_role: {
-    type: String,
-    required: true,
-  },
   profile_img: {
     type: String,
     required: false,
