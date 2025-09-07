@@ -53,4 +53,4 @@ Users.methods.comparePasswords = function (password) {
 
 const User = mongoose.model("User", Users);
 
-module.exports = Users;
+module.exports = User;

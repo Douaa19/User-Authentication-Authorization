@@ -6,7 +6,7 @@ const { Users, uploadImage } = require("../controllers");
 
 router
   .route("/register")
-  .post(uploadImage.single("profile"), Users.handleRegister);
+  .post(uploadImage.single("profile_img"), Users.handleRegister);
 
 router.route("/login").post(Users.handleLogin);
 

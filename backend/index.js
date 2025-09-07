@@ -7,7 +7,7 @@ const morgan = require("morgan");
 const PORT = process.env.PORT || 8080;
 
 // mongoose
-// require(".")
+require("./src/db/config");
 
 // require routes
 const authRoutes = require("./src/routes/auth");

@@ -10,10 +10,11 @@ const handleRegister = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser === null) {
+      
       const newUser = await User.create({
         username,
         email,
-        role,
+        role: { name: role },
         password,
         profile_img,
       });
