@@ -6,7 +6,7 @@ const Role = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    enum: ["admin", "user", "guest"],
+    enum: ["admin", "user"],
     default: "user",
   },
 });

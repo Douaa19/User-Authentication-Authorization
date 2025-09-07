@@ -10,7 +10,6 @@ const handleRegister = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser === null) {
-      
       const newUser = await User.create({
         username,
         email,
@@ -33,6 +32,8 @@ const handleRegister = async (req, res) => {
       } else {
         res.json({ message: "This email is already registered." });
       }
+    } else {
+      res.status(400).json({ message: "This email is already registered." });
     }
   } catch (error) {
     console.log(error);
