@@ -6,7 +6,7 @@ const Role = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    enum: ["admin", "user", "guest"],
+    enum: ["admin", "user"],
     default: "user",
   },
 });
@@ -25,10 +25,6 @@ const Users = new mongoose.Schema({
     ],
   },
   role: Role,
-  sub_role: {
-    type: String,
-    required: true,
-  },
   profile_img: {
     type: String,
     required: false,
@@ -57,4 +53,4 @@ Users.methods.comparePasswords = function (password) {
 
 const User = mongoose.model("User", Users);
 
-module.exports = Users;
+module.exports = User;
