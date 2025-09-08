@@ -43,7 +43,24 @@ const uploadImage = multer({
   ),
 });
 
+// user profile
+const profile = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    } else {
+      res.status(200).json({ user });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ message: "An error occurred while registering the user." });
+  }
+};
+
 module.exports = {
   uploadImage,
   Users,
+  profile,
 };

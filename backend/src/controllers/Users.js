@@ -1,7 +1,7 @@
 const User = require("../models/Users");
 const jwt = require("jsonwebtoken");
-const path = require("path");
 const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer");
 
 // Register method
 const handleRegister = async (req, res) => {
@@ -93,7 +93,76 @@ const handleLogin = async (req, res) => {
   }
 };
 
+// update profile
+const updateProfile = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const { username, email } = req.body;
+    const user = await User.findByIdAndUpdate(id, { username, email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    } else {
+      return res.status(200).json({ message: "Profile updated successfully" });
+    }
+  } catch (error) {
+    console.log("An error occurred");
+    return res.status(500).json({ message: "An error occurred" });
+  }
+};
+
+// reset password
+const resetPassword = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const { oldPassword, newPassword } = req.body;
+    const user = await User.findById(id);
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    } else {
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Old password is incorrect" });
+      } else {
+        user.password = newPassword;
+        await user.save();
+        const transporter = nodemailer.createTransport({
+          service: "",
+          auth: {
+            user: "email",
+            pass: "password",
+          },
+        });
+        const mailOptions = {
+          from: '"Name" <email>',
+          to: user.email,
+          subject: "Password Changed",
+          text: "Your password has been changed successfully",
+        };
+
+        mailOptions.headers = {
+          "Content-Type": "text/html",
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            res.json(error);
+          } else {
+            return res
+              .status(200)
+              .json({ message: "Password updated successfully" });
+          }
+        });
+      }
+    }
+  } catch (error) {
+    console.log("An error occurred");
+    return res.status(500).json({ message: "An error occurred" });
+  }
+};
+
 module.exports = {
   handleRegister,
   handleLogin,
+  updateProfile,
+  resetPassword,
 };
