@@ -93,7 +93,25 @@ const handleLogin = async (req, res) => {
   }
 };
 
+// update profile
+const updateProfile = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const { username, email } = req.body;
+    const user = await User.findByIdAndUpdate(id, { username, email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    } else {
+      return res.status(200).json({ message: "Profile updated successfully" });
+    }
+  } catch (error) {
+    console.log("An error occurred");
+    return res.status(500).json({ message: "An error occurred" });
+  }
+};
+
 module.exports = {
   handleRegister,
   handleLogin,
+  updateProfile,
 };
