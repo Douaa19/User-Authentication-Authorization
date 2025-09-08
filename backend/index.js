@@ -11,6 +11,7 @@ require("./src/db/config");
 
 // require routes
 const authRoutes = require("./src/routes/auth");
+const userRoutes = require("./src/routes/user");
 
 // middlewares
 app.use(morgan("tiny"));
@@ -24,6 +25,7 @@ app.use(express.json());
 
 // routes
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 app.listen(PORT, () => {
   console.log(`server is running at : http://localhost:${PORT}`);
