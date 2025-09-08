@@ -1,7 +1,7 @@
 const User = require("../models/Users");
 const jwt = require("jsonwebtoken");
-const path = require("path");
 const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer");
 
 // Register method
 const handleRegister = async (req, res) => {
@@ -125,9 +125,33 @@ const resetPassword = async (req, res) => {
       } else {
         user.password = newPassword;
         await user.save();
-        return res
-          .status(200)
-          .json({ message: "Password updated successfully" });
+        const transporter = nodemailer.createTransport({
+          service: "",
+          auth: {
+            user: "email",
+            pass: "password",
+          },
+        });
+        const mailOptions = {
+          from: '"Name" <email>',
+          to: user.email,
+          subject: "Password Changed",
+          text: "Your password has been changed successfully",
+        };
+
+        mailOptions.headers = {
+          "Content-Type": "text/html",
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            res.json(error);
+          } else {
+            return res
+              .status(200)
+              .json({ message: "Password updated successfully" });
+          }
+        });
       }
     }
   } catch (error) {
